@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-proxy
+  namespace: redis
+data:
+  proxy.conf: |
+        cluster 10.43.103.149:6379
+        port 7777
+        #bind redis-cluster-proxy-0.redis-cluster-proxy-svc
+        bind 0.0.0.0
+        threads 8
+        daemonize no
+        #logfile "/usr/local/redis-cluster-proxy/redis-cluster-proxy.log"
+        enable-cross-slot yes
+        #auth P@ssword
+        log-level error
+

@@ -1,0 +1,28 @@
+#---
+#apiVersion: v1
+#kind: PersistentVolume
+#metadata:
+#  name: jenkins-pv
+#spec:
+#  capacity:
+#    storage: 50Gi
+#  accessModes:
+#  - ReadWriteMany
+#  persistentVolumeReclaimPolicy: Delete
+#  nfs:
+#    server: 172.16.13.210
+#    path: /volume1/rancher/jenkins
+#
+#---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jenkins-pvc
+  #namespace: ops
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: nfs-wan

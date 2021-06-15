@@ -1,0 +1,26 @@
+nodes:
+  - address: 172.16.13.225
+    internal_address: 172.16.13.225
+    user: rancher
+    role: [controlplane, worker, etcd]
+  - address: 172.16.13.226
+    internal_address: 172.16.13.226
+    user: rancher
+    role: [controlplane, worker, etcd]
+  - address: 172.16.13.227
+    internal_address: 172.16.13.227
+    user: rancher
+    role: [controlplane, worker, etcd]
+
+services:
+  etcd:
+    snapshot: true
+    creation: 6h
+    retention: 24h
+
+kubernetes_version: "v1.18.18-rancher1-2"
+#当使用外部 TLS 终止，并且使用 ingress-nginx v0.22或以上版本时，必须。
+ingress:
+  provider: nginx
+  options:
+    use-forwarded-headers: "true"

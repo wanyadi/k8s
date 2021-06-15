@@ -1,0 +1,7 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-wan
+provisioner: wanyadi/nfs
+parameters:
+  archiveOnDelete: "false"

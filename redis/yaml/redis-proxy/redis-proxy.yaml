@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-proxy
+  namespace: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-proxy
+  template:
+    metadata:
+      labels:
+        app: redis-proxy
+    spec:
+      containers:
+        - name: redis-proxy
+          image: huanke/redis-cluster-proxy:v1.0.0
+          command: ["redis-cluster-proxy"]
+          args:
+            - -c
+            - /data/proxy.conf
+          imagePullPolicy: Always
+          ports:
+            - name: redis-7777
+              containerPort: 7777
+              protocol: TCP
+          volumeMounts:
+            - name: redis-proxy-conf
+              mountPath: /data/
+      volumes:
+      - name: redis-proxy-conf
+        configMap:
+          name: redis-proxy
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-proxy
+  namespace: redis
+spec:
+  type: NodePort
+  ports:
+  - name: redis-proxy
+    nodePort: 30379
+    port: 7777
+    protocol: TCP
+    targetPort: 7777
+  selector:
+    app: redis-proxy
+
