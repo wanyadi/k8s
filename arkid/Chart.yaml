@@ -1,0 +1,10 @@
+apiVersion: v1
+appVersion: "1.4.0"
+description: ArkID is an enterprise SSO solutions, it supports LDAP, OpenID, SAML, OAuth and more
+name: arkid
+version: 1.4.0
+maintainers:
+- email: wanyadi@gryphpoem.com  
+  name: wanyadi
+home: https://github.com/longguikeji/arkid-charts
+icon: https://raw.githubusercontent.com/skoogi/charts/assets/assets/logo.png

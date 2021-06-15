@@ -1,0 +1,126 @@
+replicaCount: 1
+
+image:
+  webServer:
+    name: web-server
+    repository: longguikeji/arkid
+    tag: "1.4.0"
+    pullPolicy: IfNotPresent
+  feServer:
+    name: fe
+    repository: longguikeji/arkid-fe
+    tag: "1.3.2"
+    pullPolicy: IfNotPresent
+  webServerBroker:
+    name: web-server-broker
+    repository: longguikeji/arkid-broker
+    tag: "1.0.0"
+    pullPolicy: IfNotPresent
+  portal:
+    name: portal
+    repository: nginx
+    tag: "alpine"
+    pullPolicy: IfNotPresent
+  redis:
+    name: redis
+    repository: redis
+    tag: "5.0.3"
+    pullPolicy: IfNotPresent
+  mysqlDatabase:
+    name: mysql-database
+    repository: mysql
+    tag: "5.7"
+    pullPolicy: IfNotPresent
+  ldap:
+    name: ldap
+    repository: longguikeji/ark-sql-ldap
+    tag: "1.2.0"
+    pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+apiServer: http://ark-apisvr
+
+service:
+  type: ClusterIP
+  feServer:
+    port: 80
+  webServer:
+    port: 80
+  webServerBroker:
+    port: 8080
+  portal:
+    port: 80
+  ldap:
+    ldapPort: 389
+    ldapsPort: 636
+  mysqlDatabase:
+    port: 3306
+
+ldapService:
+  type: NodePort
+  addr: ldap://localhost
+  ldap:
+    port: 389
+    nodePort: 30389
+  ldaps:
+    port: 636
+    nodePort: 30636
+
+persistence:  # mysql
+  init: false
+  mysql:
+    rootPassword: root
+    database: arkid
+  claimName: arkid
+  storageClass: null
+  accessMode: ReadWriteMany
+  size: 8Gi
+
+ingress:
+  enabled: true
+  cert: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+  host:
+    name: arkid.yingge.com
+  tls: true
+
+apiServer: http://ark-apisvr
+
+ldap:
+  adminPassword: t2yAhTn4PSRU7g
+
+imagePullSecrets:
+
+settingsLocal: |-
+
+  CONFIG_VERSION = 'longgui-2019-08-12'
+
+  DINGDING_APP_KEY = 'dingzirbp6onhgfg4xed'
+  DINGDING_APP_SECRET = 'MP3sfnGGiWXOa-t_2Rr13ylwv6XcD0wD5kOU2NCcn__jCNOhtPBoLEw7JzHvYwB3'
+  BASE_URL = 'http://arkid.yingge.com'
+
+  INSTALLED_APPS += ['ldap.sql_backend']
+
+  EXECUTERS = [    # 注意顺序
+    'executer.RDB.RDBExecuter',
+    'executer.log.rdb.RDBLogExecuter',
+    'executer.cache.default.CacheExecuter',
+  ]
+
+  SMS_LIFESPAN = datetime.timedelta(seconds=120)
+  SMS_ALIYUN_REGION = 'cn-hangzhou'
+  SMS_ALIYUN_PRODUCT_NAME = 'Dysmsapi'
+  SMS_ALIYUN_DOMAIN = 'dysmsapi.aliyuncs.com'
+  SMS_ALIYUN_ACCESS_KEY_ID = ''
+  SMS_ALIYUN_ACCESS_KEY_SECRET = ''
+  SMS_ALIYUN_TEMPLATE_CODE = ''
+  SMS_ALIYUN_SIGNATURE = '鹰歌游戏'
+
+  MINIO_ENDPOINT = 'minio.yingge.com'
+  MINIO_ACCESS_KEY = ''
+  MINIO_SECRET_KEY = ''
+  MINIO_SECURE = True
